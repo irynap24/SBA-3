@@ -1,0 +1,43 @@
+.matemasie-regular {
+  font-family: "Matemasie", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+.bungee-tint-regular {
+  font-family: "Bungee Tint", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #7786f5;
+}
+.jersey-10-regular {
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+  /* font-family: Bungee Tint; */
+  /* font-family: "Jersey 10", sans-serif; */
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  background-image: url(istockphoto-521049765-612x612.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  font-family: "Bungee Tint", sans-serif;
+}
+.main-container {
+  position: absolute;
+  width: 90%;
+  max-width: 37em;
+  background-color: #8ace00;
+  padding: 7em 3em;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  border-radius: 1em;
+}
