@@ -26,15 +26,11 @@ let winCount = 0,
   lossCount = 0;
 
 const generateRandomValue = (array) => Math.floor(Math.random() * array.length);
+
 const blocker = () => {
   let lettersButtons = document.querySelectorAll(".letters");
   lettersButtons.forEach((button) => (button.disabled = true));
   stopGame();
-};
-const playGameOverSound = () => {
-  if (gameOverSound) {
-    gameOverSound.play();
-  }
 };
 
 const stopGame = () => {
@@ -42,7 +38,6 @@ const stopGame = () => {
   tryAgainBtn.classList.remove("hide"); // Show the "Try Again" button
   startBtn.classList.add("hide"); // Hide the "Start" button
 };
-
 const clearGameState = () => {
   resultText.innerHTML = "";
   word.innerHTML = "";
@@ -50,6 +45,7 @@ const clearGameState = () => {
   letterContainer.innerHTML = "";
   message.innerText = "";
 };
+
 tryAgainBtn.addEventListener("click", () => {
   clearGameState(); // Clear any lingering game end messages
   init();
@@ -57,3 +53,14 @@ tryAgainBtn.addEventListener("click", () => {
   startBtn.classList.remove("hide"); // Show the "Start" button
   startBtn.innerText = "Start"; // Reset "Start" button text
 });
+//hides the Start button after game over so its only Try Again
+startBtn.addEventListener("click", () => {
+  controls.classList.add("hide");
+  init();
+});
+// plays whomp whomp if game is lost
+const playGameOverSound = () => {
+  if (gameOverSound) {
+    gameOverSound.play();
+  }
+};
