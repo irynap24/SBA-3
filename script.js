@@ -31,9 +31,29 @@ const blocker = () => {
   lettersButtons.forEach((button) => (button.disabled = true));
   stopGame();
 };
+const playGameOverSound = () => {
+  if (gameOverSound) {
+    gameOverSound.play();
+  }
+};
 
 const stopGame = () => {
   controls.classList.remove("hide");
   tryAgainBtn.classList.remove("hide"); // Show the "Try Again" button
   startBtn.classList.add("hide"); // Hide the "Start" button
 };
+
+const clearGameState = () => {
+  resultText.innerHTML = "";
+  word.innerHTML = "";
+  userInpSection.innerHTML = "";
+  letterContainer.innerHTML = "";
+  message.innerText = "";
+};
+tryAgainBtn.addEventListener("click", () => {
+  clearGameState(); // Clear any lingering game end messages
+  init();
+  tryAgainBtn.classList.add("hide"); // Hide the "Try Again" button
+  startBtn.classList.remove("hide"); // Show the "Start" button
+  startBtn.innerText = "Start"; // Reset "Start" button text
+});
