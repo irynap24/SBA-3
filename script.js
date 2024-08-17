@@ -17,6 +17,7 @@ const userInpSection = document.getElementById("user-input-section");
 const resultText = document.getElementById("result");
 const word = document.getElementById("word");
 const tryAgainBtn = document.getElementById("tryAgain");
+const gameOverSound = document.getElementById("gameOverSound");
 
 const words = Object.keys(options);
 let randomWord = "",
@@ -25,3 +26,14 @@ let winCount = 0,
   lossCount = 0;
 
 const generateRandomValue = (array) => Math.floor(Math.random() * array.length);
+const blocker = () => {
+  let lettersButtons = document.querySelectorAll(".letters");
+  lettersButtons.forEach((button) => (button.disabled = true));
+  stopGame();
+};
+
+const stopGame = () => {
+  controls.classList.remove("hide");
+  tryAgainBtn.classList.remove("hide"); // Show the "Try Again" button
+  startBtn.classList.add("hide"); // Hide the "Start" button
+};
