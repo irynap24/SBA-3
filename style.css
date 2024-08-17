@@ -15,6 +15,8 @@
   font-style: normal;
 }
 * {
+  /* font-family: Bungee Tint; */
+  /* font-family: "Jersey 10", sans-serif; */
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -22,7 +24,7 @@
 body {
   font-family: "Bungee Tint", sans-serif;
 }
-.main-container {
+.wrapper {
   position: absolute;
   width: 90%;
   max-width: 37em;
@@ -56,21 +58,4 @@ body {
   outline: none;
   border-radius: 2em;
   cursor: help;
-}
-#letter-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8em 0.4em;
-  justify-content: center;
-  margin-top: 2em;
-}
-#letter-container button {
-  background-color: #ffffff82;
-  border: 2px solid #4400ce;
-  color: #000000;
-  outline: none;
-  border-radius: 0.3em;
-  cursor: pointer;
-  height: 3em;
-  width: 3em;
 }
