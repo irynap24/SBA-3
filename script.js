@@ -13,7 +13,7 @@ const hintRef = document.querySelector(".hint-ref");
 const controls = document.querySelector(".controls-container");
 const startBtn = document.getElementById("start");
 const letterContainer = document.getElementById("letter-container");
-const userInpSection = document.getElementById("user-input-section");
+const userInput = document.getElementById("user-input-section");
 const resultText = document.getElementById("result");
 const word = document.getElementById("word");
 const tryAgainBtn = document.getElementById("tryAgain");
@@ -41,7 +41,7 @@ const stopGame = () => {
 const clearGameState = () => {
   resultText.innerHTML = "";
   word.innerHTML = "";
-  userInpSection.innerHTML = "";
+  userInput.innerHTML = "";
   letterContainer.innerHTML = "";
   message.innerText = "";
 };
@@ -63,4 +63,17 @@ const playGameOverSound = () => {
   if (gameOverSound) {
     gameOverSound.play();
   }
+};
+const generateWord = () => {
+  letterContainer.classList.remove("hide");
+  userInput.innerText = "";
+  randomWord = words[generateRandomValue(words)];
+  randomHint = options[randomWord];
+  hintRef.innerHTML = `<div id="wordHint"><span>Hint: </span>${randomHint}</div>`;
+  let displayItem = "";
+  randomWord.split("").forEach(() => {
+    displayItem += '<span class="inputSpace">_ </span>';
+  });
+  userInput.innerHTML = displayItem;
+  userInput.innerHTML += `<div id='chanceCount'>Chances Left: ${lossCount}</div>`;
 };
