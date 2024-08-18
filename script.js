@@ -1,3 +1,4 @@
+// Options for hints corresponding to different words
 const options = {
   brat: "It's ____ summer",
   pepper: "Salt's partner",
@@ -7,44 +8,49 @@ const options = {
   kilogram: "but they both weigh a ",
 };
 
+// DOM elements
 const message = document.getElementById("message");
 const hintRef = document.querySelector(".hint-ref");
 const controls = document.querySelector(".controls-container");
 const startBtn = document.getElementById("start");
-const letterContainer = document.getElementById("letter-container");
-const userInput = document.getElementById("user-input");
-const resultText = document.getElementById("result");
-const word = document.getElementById("word");
-const gameOverSound = document.getElementById("gameOverSound");
-const words = Object.keys(options);
-let randomWord = "",
-  randomHint = "";
+const letterContainer = document.getElementById("letter-container"); // Container for letter buttons
+const userInput = document.getElementById("user-input"); // Element to display blanks for the word
+const resultText = document.getElementById("result"); // Element to display game result (win/lose)
+const word = document.getElementById("word"); // Element to display the guessed word
+const gameOverSound = document.getElementById("gameOverSound"); // Sound to play when game is lost
+const words = Object.keys(options); // Array of words from the options object
+let randomWord = "", // Variable to hold the randomly selected word
+  randomHint = ""; // Variable to hold the hint for the selected word
 let winCount = 0,
   lossCount = 0;
 
-// Generate random value
+// Generate a random index based on the array length
 const generateRandomValue = (array) => Math.floor(Math.random() * array.length);
 
-// Block all the buttons
+// Disable all letter buttons to prevent re-selection if a letter is not in the word
 const blocker = () => {
   let lettersButtons = document.querySelectorAll(".letters");
   lettersButtons.forEach((button) => (button.disabled = true));
 };
 
-// Start Game
+// Event listener for the Start button
 startBtn.addEventListener("click", () => {
-  controls.classList.add("hide");
+  controls.classList.add("hide"); // Hide the controls container
   startBtn.style.display = "none"; // Hide the Start button
-  initializeGame();
+  initializeGame(); // Initialize the game
 });
 
-// Stop Game
-const stopGame = () => {
-  controls.classList.remove("hide");
-  tryAgainButton(); // Create "Try Again" button when the game is stopped
+// Stop Game function, handles both "Try Again" and "Play Again" buttons
+const stopGame = (gameWon) => {
+  controls.classList.remove("hide"); // Show the controls container
+  if (gameWon) {
+    playAgainButton(); // Create "Play Again" button when the game is won
+  } else {
+    tryAgainButton(); // Create "Try Again" button when the game is stopped
+  }
 };
 
-// Create Try Again button
+// Function to create and display the Try Again button after losing game
 const tryAgainButton = () => {
   let existingButton = document.getElementById("try-again");
   if (!existingButton) {
@@ -54,102 +60,116 @@ const tryAgainButton = () => {
     tryAgainButton.classList.add("try-again");
     tryAgainButton.addEventListener("click", () => {
       startBtn.style.display = "block"; // Show the Start button again
-      document.getElementById("try-again").remove(); // Remove Try Again button
-      startBtn.click(); // Simulate a click on the start button to restart the game
+      document.getElementById("try-again").remove(); // Remove the Try Again button
+      startBtn.click(); // Simulate a click on the Start button to restart the game
     });
     controls.appendChild(tryAgainButton);
   }
 };
-
-// Generate Word Function
-const generateWord = () => {
-  letterContainer.classList.remove("hide");
-  userInput.innerText = "";
-  randomWord = words[generateRandomValue(words)];
-  randomHint = options[randomWord];
-  hintRef.innerHTML = `<div id="wordHint">
-  <span>Hint: </span>${randomHint}</div>`;
-  let displayItem = "";
-  randomWord.split("").forEach((value) => {
-    displayItem += '<span class="inputSpace">_ </span>';
-  });
-
-  // Display each element as span
-  userInput.innerHTML = displayItem;
-  userInput.innerHTML += `<div id='chanceCount'>Chances Left: ${lossCount}</div>`;
+// Create Play Again button after winning a game
+const playAgainButton = () => {
+  let existingButton = document.getElementById("play-again");
+  if (!existingButton) {
+    let playAgainButton = document.createElement("button"); // Create the Play Again button
+    playAgainButton.id = "play-again";
+    playAgainButton.innerText = "Play Again"; // Set button text
+    playAgainButton.classList.add("play-again"); // Add class for styling
+    playAgainButton.addEventListener("click", () => {
+      startBtn.style.display = "block"; // Show the Start button again
+      document.getElementById("play-again").remove(); // Remove the Play Again button
+      startBtn.click(); // Simulate a click on the Start button to restart the game
+    });
+    controls.appendChild(playAgainButton); // Add the Play Again button to the controls container
+  }
 };
 
-// Initial Function
+// Function to generate a new word and hint for the game
+const generateWord = () => {
+  letterContainer.classList.remove("hide"); // Show the letter buttons container
+  userInput.innerText = ""; // Clear previous word display
+  randomWord = words[generateRandomValue(words)]; // Select a random word
+  randomHint = options[randomWord]; // Get the hint for the selected word
+  hintRef.innerHTML = `<div id="wordHint">
+  <span>Hint: </span>${randomHint}</div>`; // Display the hint
+
+  // Create a display of underscores (_ _ _ _) for each letter in the word
+  let underscorePlaceholder = "";
+  randomWord.split("").forEach(() => {
+    underscorePlaceholder += '<span class="inputSpace">_ </span>';
+  });
+
+  userInput.innerHTML = underscorePlaceholder; // Display underscorePlaceholder in the user input area
+  userInput.innerHTML += `<div id='chanceCount'>Chances Left: ${lossCount}</div>`; // Display remaining chances
+};
+
+// Initialize the game
 const initializeGame = () => {
-  winCount = 0;
-  lossCount = 5;
-  randomWord = "";
-  word.innerText = "";
-  randomHint = "";
-  message.innerText = "";
-  userInput.innerHTML = "";
-  letterContainer.classList.add("hide");
-  letterContainer.innerHTML = "";
-  generateWord();
+  winCount = 0; // Reset win count
+  lossCount = 5; // Set initial number of chances
+  randomWord = ""; // Clear previous word
+  word.innerText = ""; // Clear displayed word
+  randomHint = ""; // Clear previous hint
+  message.innerText = ""; // Clear message display
+  userInput.innerHTML = ""; // Clear user input display
+  letterContainer.classList.add("hide"); // Hide letter buttons container
+  letterContainer.innerHTML = ""; // Clear letter buttons
 
-  // For creating letter buttons
+  generateWord(); // Generate a new word and hint
+
+  // Create letter buttons for the alphabet
   for (let i = 65; i < 91; i++) {
-    let button = document.createElement("button");
+    let button = document.createElement("button"); // Create a button for each letter
     button.classList.add("letters");
-    button.innerText = String.fromCharCode(i);
+    button.innerText = String.fromCharCode(i); // Set button text to letter
 
-    // Character button onclick
+    // Event listener for letter button clicks
     button.addEventListener("click", () => {
-      message.style.color = "#008000";
-      let charArray = randomWord.toUpperCase().split("");
-      let inputSpace = document.getElementsByClassName("inputSpace");
+      message.style.color = "#008000"; // Set message color to green for correct guesses
+      let charArray = randomWord.toUpperCase().split(""); // Convert word to uppercase and split into an array
+      let inputSpace = document.getElementsByClassName("inputSpace"); // Get all input spaces (underscores)
 
-      // If array contains clicked value replace the matched Dash with Letter
+      // Check if the clicked letter is in the word
       if (charArray.includes(button.innerText)) {
         charArray.forEach((char, index) => {
-          // If character in array is same as clicked button
+          // If character matches clicked button, replace underscore with letter
           if (char === button.innerText) {
-            button.classList.add("correct");
-            // Replace dash with letter
-            inputSpace[index].innerText = char;
-            // Increment counter
-            winCount += 1;
-            // If winCount equals word length
+            button.classList.add("correct"); // Mark button as correct
+            inputSpace[index].innerText = char; // Replace underscore with letter
+            winCount += 1; // Increment win count
+            // Check if all letters have been guessed
             if (winCount == charArray.length) {
-              resultText.innerHTML = "You Won";
-              startBtn.innerText = "Restart";
-              // Block all buttons
-              blocker();
-              stopGame(); // Stop the game and show Try Again button
+              resultText.innerHTML = "Congrats! You guessed "; // Display win message
+              blocker(); // Disable all letter buttons
+              stopGame(true); // Stop the game and show Play Again button
             }
           }
         });
       } else {
-        // Lose count
-        button.classList.add("incorrect");
-        lossCount -= 1;
+        // Handle incorrect guesses
+        button.classList.add("incorrect"); // Mark button as incorrect
+        lossCount -= 1; // Decrement loss count
         document.getElementById(
           "chanceCount"
-        ).innerText = `Chances Left: ${lossCount}`;
-        message.style.color = "#ff0000";
+        ).innerText = `Chances Left: ${lossCount}`; // Update chances left
+        message.style.color = "#ff0000"; // Set message color to red for incorrect guesses
+        // Check if no chances are left
         if (lossCount == 0) {
-          word.innerHTML = `The word was: <span>${randomWord}</span>`;
-          resultText.innerHTML = "Game Over";
-          blocker();
-          gameOverSound.play();
-          stopGame(); // Stop the game and show Try Again button
+          word.innerHTML = `The word was: <span>${randomWord}</span>`; // Display the word
+          resultText.innerHTML = "Game Over"; // Display game over message
+          blocker(); // Disable all letter buttons
+          gameOverSound.play(); // Play game over sound
+          stopGame(false); // Stop the game and show Try Again button
         }
       }
 
-      // Disable clicked buttons
-      button.disabled = true;
+      button.disabled = true; // Disable the clicked button
     });
 
-    // Append generated buttons to the letters container
-    letterContainer.appendChild(button);
+    letterContainer.appendChild(button); // Add the button to the letter container
   }
 };
 
+// Initialize the game when the window loads
 window.onload = () => {
   initializeGame();
 };

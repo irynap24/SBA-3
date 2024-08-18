@@ -48,7 +48,8 @@ body {
   top: 0;
 }
 #start,
-#try-again {
+#try-again,
+#play-again {
   font-family: "Jersey 10", sans-serif;
   font-size: 1.2em;
   padding: 1em 3em;
