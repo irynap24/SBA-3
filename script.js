@@ -35,7 +35,7 @@ const blocker = () => {
 startBtn.addEventListener("click", () => {
   controls.classList.add("hide");
   startBtn.style.display = "none"; // Hide the Start button
-  init();
+  initializeGame();
 });
 
 // Stop Game
@@ -80,7 +80,7 @@ const generateWord = () => {
 };
 
 // Initial Function
-const init = () => {
+const initializeGame = () => {
   winCount = 0;
   lossCount = 5;
   randomWord = "";
@@ -151,5 +151,5 @@ const init = () => {
 };
 
 window.onload = () => {
-  init();
+  initializeGame();
 };

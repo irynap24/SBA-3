@@ -55,7 +55,7 @@ body {
   background-color: #8ace00;
   border: 8px solid black;
   border-radius: 2em;
-  cursor: pointer;
+  cursor: help;
 }
 #letter-container {
   display: flex;
