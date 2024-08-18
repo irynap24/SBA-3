@@ -45,8 +45,10 @@ const stopGame = (gameWon) => {
   controls.classList.remove("hide"); // Show the controls container
   if (gameWon) {
     playAgainButton(); // Create "Play Again" button when the game is won
+    resultText.innerHTML = `Congrats! You guessed <span>${randomWord}</span>`; // Display the win message with the correct word
   } else {
     tryAgainButton(); // Create "Try Again" button when the game is stopped
+    resultText.innerHTML = "Game Over"; // Display game over message
   }
 };
 
@@ -98,7 +100,7 @@ const generateWord = () => {
     underscorePlaceholder += '<span class="inputSpace">_ </span>';
   });
 
-  userInput.innerHTML = underscorePlaceholder; // Display underscorePlaceholder in the user input area
+  userInput.innerHTML = underscorePlaceholder; // Display underscores in the user input area
   userInput.innerHTML += `<div id='chanceCount'>Chances Left: ${lossCount}</div>`; // Display remaining chances
 };
 
@@ -124,7 +126,6 @@ const initializeGame = () => {
 
     // Event listener for letter button clicks
     button.addEventListener("click", () => {
-      message.style.color = "#008000"; // Set message color to green for correct guesses
       let charArray = randomWord.toUpperCase().split(""); // Convert word to uppercase and split into an array
       let inputSpace = document.getElementsByClassName("inputSpace"); // Get all input spaces (underscores)
 
@@ -137,10 +138,13 @@ const initializeGame = () => {
             inputSpace[index].innerText = char; // Replace underscore with letter
             winCount += 1; // Increment win count
             // Check if all letters have been guessed
-            if (winCount == charArray.length) {
-              resultText.innerHTML = "Congrats! You guessed "; // Display win message
+            if (winCount === charArray.length) {
               blocker(); // Disable all letter buttons
-              stopGame(true); // Stop the game and show Play Again button
+              // Slight delay before showing the win message
+              setTimeout(() => {
+                resultText.innerHTML = `Congrats! You guessed <span>${randomWord}</span>`; // Display the win message with the correct word
+                stopGame(true); // Call stopGame with true to show Play Again button
+              }, 2000); // Delay of 2,000 milliseconds
             }
           }
         });
@@ -153,16 +157,15 @@ const initializeGame = () => {
         ).innerText = `Chances Left: ${lossCount}`; // Update chances left
         message.style.color = "#ff0000"; // Set message color to red for incorrect guesses
         // Check if no chances are left
-        if (lossCount == 0) {
+        if (lossCount === 0) {
           word.innerHTML = `The word was: <span>${randomWord}</span>`; // Display the word
-          resultText.innerHTML = "Game Over"; // Display game over message
           blocker(); // Disable all letter buttons
           gameOverSound.play(); // Play game over sound
           stopGame(false); // Stop the game and show Try Again button
         }
       }
 
-      button.disabled = true; // Disable the clicked button
+      button.disabled = true;
     });
 
     letterContainer.appendChild(button); // Add the button to the letter container
