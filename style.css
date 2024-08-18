@@ -65,14 +65,13 @@ body {
   margin-top: 2em;
 }
 #letter-container button {
-  background-color: #ffffff;
+  background-color: #ffffff87;
   border: 2px solid #7786f5;
   color: #7786f5;
-  outline: none;
-  border-radius: 0.3em;
+  border-radius: 0.2em;
   cursor: pointer;
-  height: 3em;
-  width: 3em;
+  height: 2rem;
+  width: 3rem;
 }
 #letter-container .correct {
   background-color: #008000;
@@ -85,7 +84,7 @@ body {
   border: 2px solid #8a8686;
 }
 .hint-ref {
-  margin-bottom: 1em;
+  margin-bottom: 50px;
 }
 .hint-ref span {
   font-weight: 600;
